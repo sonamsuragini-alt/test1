@@ -30,7 +30,7 @@ jobs:
       with:
        image: sonamsuragini/test1
        tags: v1, latest
-       registry: https://hub.docker.com/
+       registry: docker.io
        dockerfile: Dockerfile
        username: sonamsuragini
        password: $Sonal2017
