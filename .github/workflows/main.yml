@@ -1,26 +1,21 @@
-# This is a basic workflow to help you get started with Actions
-on: [push]
-name: CI
-
-jobs:
-   depchecktest:
-    runs-on: ubuntu-latest
-    name: depecheck_test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build project with Maven
-        run: mvn clean install
-      - name: Depcheck
-        uses: dependency-check/Dependency-Check_Action@main
-        id: Depcheck
-        with:
-          project: 'test'
-          path: '.'
-          format: 'HTML'    
-          others: ''
-      - name: Upload Test results
-        uses: actions/upload-artifact@master
-        with:
-           name: Depcheck report
-           path: ${{github.workspace}}/reports
+on:[push]
+name:'Dependency Check scan'
+description:'Runs dependency check on checked out code.'
+inputs:
+    Project-Name:
+        required: true
+    Source-Location:
+        required: false
+        default: '/github/workspace'    
+    Report-Format:
+        required: false
+        default: 'ALL'
+    Report-Location:
+        required: false
+        default: '/github/workspace/reports'
+   Log-Name:
+        required: false
+        default: log.txt
+runs: 
+ using: 'docker'
+ image: 'Dockerfile'
