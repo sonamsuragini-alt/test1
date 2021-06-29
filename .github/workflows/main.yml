@@ -25,12 +25,28 @@ jobs:
     - uses: actions/checkout@v2
       name: Check out code
 
-    - uses: mr-smithers-excellent/docker-build-push@v5
-      name: Build & push Docker image
-      with:
-       image: sonamsuragini/test1
-       tags: v1, latest
-       registry: docker.io
-       dockerfile: Dockerfile
-       username: sonamsuragini
-       password: $Sonal2017
+      dep-check:
+      - uses: actions/checkout@v2
+
+      - name: Dependency-Check
+        uses: djelibeybi/dependency-check-action@v1
+        id: depdendency-check
+
+      - name: Upload Dependency-Check Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: OWASP Dependency-Check Report
+          path: ${{ github.workspace }}/.github/dependency-check-report.*
+
+      - name: Auto Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: mr-smithers-excellent/docker-build-push@v5
+        name: Build & push Docker image
+     
+        with:
+        image: sonamsuragini/test1
+        tags: v1, latest
+        registry: docker.io
+        dockerfile: Dockerfile
+        username: sonamsuragini
+        password: $Sonal2017
